@@ -45,11 +45,11 @@ jobs:
         cd twrp
         mkdir -p .repo/local_manifests
         cat > .repo/local_manifests/device.xml << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<manifest>
-  <project path="device/google/raven" name="frpunlockcg-rgb/android_device_google_raven" remote="github" revision="raven-user-13-TP1A.221005.002-9012097-release-keys" />
-</manifest>
-EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <manifest>
+          <project path="device/google/raven" name="frpunlockcg-rgb/android_device_google_raven" remote="github" revision="raven-user-13-TP1A.221005.002-9012097-release-keys" />
+        </manifest>
+        EOF
 
     - name: Sync TWRP Source
       run: |
