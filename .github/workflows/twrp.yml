@@ -1,0 +1,73 @@
+name: Build TWRP
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "raven-user-13-TP1A.221005.002-9012097-release-keys" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: device/google/raven
+
+    - name: Setup Android Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev \
+          libc6-dev-i386 libncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev \
+          libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig python3 python3-pip \
+          python3-venv bc cpio rsync ccache pigz
+
+    - name: Install Repo Tool
+      run: |
+        mkdir -p ~/.bin
+        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/.bin/repo
+        chmod a+rx ~/.bin/repo
+        echo "$HOME/.bin" >> $GITHUB_PATH
+
+    - name: Initialize TWRP Source
+      run: |
+        mkdir -p twrp
+        cd twrp
+        repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
+
+    - name: Sync TWRP Source
+      run: |
+        cd twrp
+        repo sync -j$(nproc) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
+
+    - name: Apply Device Tree
+      run: |
+        cd twrp
+        mkdir -p device/google
+        ln -s ../../../device/google/raven device/google/raven
+
+    - name: Build TWRP Recovery
+      run: |
+        cd twrp
+        source build/envsetup.sh
+        lunch twrp_raven-eng
+        mka recoveryimage -j$(nproc)
+
+    - name: Upload Recovery Image
+      uses: actions/upload-artifact@v4
+      with:
+        name: twrp-recovery-raven
+        path: twrp/out/target/product/raven/recovery.img
+        retention-days: 7
+
+    - name: Create Release
+      if: github.event_name == 'workflow_dispatch'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: twrp-raven-${{ github.run_number }}
+        name: TWRP for Pixel 6 (raven) #${{ github.run_number }}
+        files: twrp/out/target/product/raven/recovery.img
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
