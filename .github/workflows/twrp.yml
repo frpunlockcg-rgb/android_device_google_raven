@@ -36,16 +36,21 @@ jobs:
         cd twrp
         repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
 
+    - name: Add Device Tree to Local Manifest
+      run: |
+        cd twrp
+        mkdir -p .repo/local_manifests
+        cat > .repo/local_manifests/device.xml << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <project path="device/google/raven" name="frpunlockcg-rgb/android_device_google_raven" remote="github" revision="raven-user-13-TP1A.221005.002-9012097-release-keys" />
+</manifest>
+EOF
+
     - name: Sync TWRP Source
       run: |
         cd twrp
         repo sync -j$(nproc) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
-
-    - name: Apply Device Tree
-      run: |
-        cd twrp
-        mkdir -p device/google
-        ln -s ../../../device/google/raven device/google/raven
 
     - name: Build TWRP Recovery
       run: |
