@@ -1,0 +1,25 @@
+#
+# Copyright (C) 2023 The Android Open Source Project
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+cc_library_shared {
+    name: "bootctrl.gs101.recovery",
+    recovery_available: true,
+    srcs: [
+        "bootctrl.cpp",
+    ],
+    shared_libs: [
+        "libandroid_hardware_boot",
+        "libbase",
+        "liblog",
+        "libcutils",
+    ],
+    cflags: [
+        "-Wno-unused-parameter",
+    ],
+    strip: {
+        none: true,
+    },
+}
