@@ -2,13 +2,17 @@ name: Build TWRP
 
 on:
   workflow_dispatch:
-  push:
+  workflow_run:
+    workflows: ["Build Check"]
+    types:
+      - completed
     branches: [ "raven-user-13-TP1A.221005.002-9012097-release-keys" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
 
     steps:
     - uses: actions/checkout@v4
