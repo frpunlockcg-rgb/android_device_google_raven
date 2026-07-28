@@ -45,29 +45,28 @@ jobs:
         cd twrp
         repo sync -j$(nproc) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
 
-    - name: Build TWRP Recovery
+    - name: Build TWRP Boot Image
       run: |
         cd twrp
         source build/envsetup.sh
         lunch twrp_raven-eng
-        mka recoveryimage -j$(nproc)
+        mka bootimage -j$(nproc)
 
-    - name: Find Recovery Image
+    - name: Find Boot Image
       run: |
         cd twrp
-        echo "=== Searching for recovery.img ==="
-        find out/ -name "recovery.img" -type f 2>/dev/null || echo "recovery.img not found"
+        echo "=== Searching for boot.img ==="
+        find out/ -name "boot.img" -type f 2>/dev/null || echo "boot.img not found"
         echo "=== Searching for any .img files ==="
         find out/target/product/raven/ -name "*.img" -type f 2>/dev/null || echo "No .img files found"
         echo "=== Listing product directory ==="
         ls -la out/target/product/raven/ 2>/dev/null || echo "Product directory not found"
 
-    - name: Upload Recovery Image
+    - name: Upload Boot Image
       uses: actions/upload-artifact@v4
       with:
-        name: twrp-recovery-raven
+        name: twrp-boot-raven
         path: |
-          twrp/out/target/product/raven/recovery.img
           twrp/out/target/product/raven/boot.img
         if-no-files-found: warn
         retention-days: 7
@@ -79,7 +78,6 @@ jobs:
         tag_name: twrp-raven-${{ github.run_number }}
         name: TWRP for Pixel 6 (raven) #${{ github.run_number }}
         files: |
-          twrp/out/target/product/raven/recovery.img
           twrp/out/target/product/raven/boot.img
         if-no-files-found: warn
         generate_release_notes: true
