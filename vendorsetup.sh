@@ -1,10 +1,2 @@
-#
-# Copyright (C) 2023 The Android Open Source Project
-# Copyright (C) 2023 SebaUbuntu's TWRP device tree generator
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
-add_lunch_combo omni_raven-user
-add_lunch_combo omni_raven-userdebug
-add_lunch_combo omni_raven-eng
+#!/bin/sh
+# Lunch combos are now defined in AndroidProducts.mk via COMMON_LUNCH_CHOICES
