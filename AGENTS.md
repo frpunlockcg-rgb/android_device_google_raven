@@ -11,10 +11,12 @@ repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aos
 repo sync -j$(nproc) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
 source build/envsetup.sh
 lunch twrp_raven-eng
-mka recoveryimage -j$(nproc)
+mka bootimage -j$(nproc)
 ```
 
-Output: `out/target/product/raven/recovery.img` and `boot.img`.
+Output: `out/target/product/raven/boot.img`.
+
+Use `fastboot boot boot.img` to boot TWRP without flashing.
 
 ## Key device tree layout
 
