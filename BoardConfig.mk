@@ -49,7 +49,6 @@ TARGET_SCREEN_DENSITY := 560
 TARGET_USES_VULKAN := true
 
 # Kernel
-TARGET_NO_KERNEL := true
 BOARD_BOOTIMG_HEADER_VERSION := 4
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_CMDLINE := dyndbg=&#34;func alloc_contig_dump_pages +p&#34; earlycon=exynos4210,0x10A00000 console=ttySAC0,115200 androidboot.console=ttySAC0 printk.devkmsg=on cma_sysfs.experimental=Y swiotlb=noforce at24.write_timeout=100 log_buf_len=1024K bootconfig
@@ -62,11 +61,11 @@ BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
-# Kernel - prebuilt (disabled: no kernel prebuilt available, stock kernel used)
-# TARGET_FORCE_PREBUILT_KERNEL := true
-# TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-# TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
-# BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
+# Kernel - prebuilt
+TARGET_FORCE_PREBUILT_KERNEL := true
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
