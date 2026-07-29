@@ -10,8 +10,8 @@ PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/twrp_raven.mk
 
 COMMON_LUNCH_CHOICES := \
-    omni_raven-user \
-    omni_raven-userdebug \
-    omni_raven-eng \
-    twrp_raven-eng \
-    twrp_raven-userdebug
+    omni_raven-ap2a-user \
+    omni_raven-ap2a-userdebug \
+    omni_raven-ap2a-eng \
+    twrp_raven-ap2a-eng \
+    twrp_raven-ap2a-userdebug

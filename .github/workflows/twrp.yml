@@ -50,7 +50,7 @@ jobs:
         cd twrp
         export ALLOW_MISSING_DEPENDENCIES=true
         source build/envsetup.sh
-        lunch twrp_raven-eng
+        lunch twrp_raven-ap2a-eng
         mka bootimage -j$(nproc)
 
     - name: Find Boot Image
